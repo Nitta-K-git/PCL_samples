@@ -28,7 +28,7 @@ PCL basic samples
 - コンパイル中によく分からないエラーが出てくる場合は大抵cmakeの設定がおかしいことが多い
 - ALL_BUILDしたら、INSTALLする前に想定通りのファイルが生成されているか確認する(libのデバッグモードでサフィックスが付いてなかったりするとリリースモードと混ざってしまう)
 
-## 動作確認
+## 動作確認00
 
 Qtでの動作確認をする場合は`Qt_visualizer_demo`のディレクトリ内で以下のコマンド実行する。
 
@@ -43,7 +43,15 @@ cmake --build . --config Release
 
 使えるコンパイラはcmake --helpで確認可能。
 
+### Qt Creatorでのコンパイル
+
+CMakeLists.txtを読み込むことでQt Creator上でもコンパイルが可能。叩いてるコマンドは同じなので、出てくるものも変わらない。
+
+ただし、コンパイラがmsvc系の場合(他も？)エラーメッセージなどが文字化けする。また、ビルド先はQt Creatorのデフォルトのものになる。
+
 ---
+
+# チュートリアルのプログラム例
 
 ## Qt_visualizer_demo
 
@@ -55,15 +63,35 @@ PCL+Qt+VTKのサンプル
 
 [Qtのcmakeサンプル](https://doc.qt.io/qt-5/cmake-manual.html)のページを参考にCMakeLists.txtを作成。
 
+## tutorial_Surface_triangulation
+
+[このページ](http://pointclouds.org/documentation/tutorials/greedy_projection.php)をほぼそのまま使用。最新版で仕様が一部変わっていたところを修正。
+
+点群データからメッシュデータを作成して出力する。
+
+![生成したデータ例](img/tutorial_Surface_triangulation.png)
+
+## tutorial_Surface_fitting
+
+ソースは[ここ](http://pointclouds.org/documentation/tutorials/bspline_fitting.php#bspline-fitting)。修正せずにそのまま使えた。
+
+
+
+## tutorial_Surface_HullPolygon
+
+ソースは[ここ](http://pointclouds.org/documentation/tutorials/hull_2d.php#hull-2d)。
+
+
+
+## tutorial_Surface_Smoothing_NormalEst
+
+ソースは[ここ](http://pointclouds.org/documentation/tutorials/resampling.php#moving-least-squares)。
+
+
+
 ---
 
 ### memo
 
 VTKマウスピッキング・テキスト描画 http://pointclouds.org/documentation/tutorials/pcl_visualizer.php
-
-メッシュデータ pcl::PolygonMesh
-
-点群データ pcl::PointCloud<PointT>
-
-C:\Program Files\PCL\include\pcl-1.9\pcl\visualization\pcl_visualizer.h
 
