@@ -28,7 +28,7 @@ PCL basic samples
 - コンパイル中によく分からないエラーが出てくる場合は大抵cmakeの設定がおかしいことが多い
 - ALL_BUILDしたら、INSTALLする前に想定通りのファイルが生成されているか確認する(libのデバッグモードでサフィックスが付いてなかったりするとリリースモードと混ざってしまう)
 
-## 動作確認00
+## 動作確認
 
 Qtでの動作確認をする場合は`Qt_visualizer_demo`のディレクトリ内で以下のコマンド実行する。
 
@@ -73,19 +73,21 @@ PCL+Qt+VTKのサンプル
 
 ## tutorial_Surface_fitting
 
-ソースは[ここ](http://pointclouds.org/documentation/tutorials/bspline_fitting.php#bspline-fitting)。修正せずにそのまま使えた。
+ソースは[ここ](http://pointclouds.org/documentation/tutorials/bspline_fitting.php#bspline-fitting)。修正せずにそのまま使えたが、処理が終わらなかったので、パラメータのイテレータ数を減らした。
+
+![](img/tutorial_Surface_fitting.png)
 
 
 
 ## tutorial_Surface_HullPolygon
 
-ソースは[ここ](http://pointclouds.org/documentation/tutorials/hull_2d.php#hull-2d)。
+ソースは[ここ](http://pointclouds.org/documentation/tutorials/hull_2d.php#hull-2d)。変更なし。
 
-
+<img src="img/tutorial_Surface_HullPolygon_1.png" width="45%" title="入力データ"><img src="img/tutorial_Surface_HullPolygon_2.png" width="45%" title="出力データ">
 
 ## tutorial_Surface_Smoothing_NormalEst
 
-ソースは[ここ](http://pointclouds.org/documentation/tutorials/resampling.php#moving-least-squares)。
+ソースは[ここ](http://pointclouds.org/documentation/tutorials/resampling.php#moving-least-squares)。ファイル名を変更できるオプションだけ追加。
 
 
 

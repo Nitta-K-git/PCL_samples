@@ -41,7 +41,7 @@ auto read_point_cloud(const std::string& filename, const std::string& filename2)
 	}
 	else {
 		printf("load mesh\nfaces: %d, vertecies: %d\n", mesh->polygons.size(), mesh->cloud.data.size());
-
+		
 	}
 
 	// メッシュ生成 http://pointclouds.org/documentation/tutorials/greedy_projection.php

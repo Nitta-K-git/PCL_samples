@@ -43,15 +43,15 @@ int main(int argc, char *argv[]) {
     PointCloud2Vector3d(cloud, data.interior);
     pcl::visualization::PointCloudColorHandlerCustom<Point> handler(cloud, 0, 255, 0);
     viewer.addPointCloud<Point>(cloud, handler, "cloud_cylinder");
-    printf("  %lu points in data set\n", cloud->size());
+    printf("  %zu points in data set\n", cloud->size());
 
     // ############################################################################
     // fit B-spline surface
 
     // parameters
     unsigned order(3);
-    unsigned refinement(5);
-    unsigned iterations(10);
+    unsigned refinement(4);	// 5Ç…Ç∑ÇÈÇ∆ã}åÉÇ…èàóùéûä‘Ç™ëùÇ¶ÇÈÅBå„ÇÃèàóùéûä‘Ç‡ëùëÂÇ∑ÇÈÅB
+    unsigned iterations(5); // 10
     unsigned mesh_resolution(256);
 
     pcl::on_nurbs::FittingSurface::Parameter params;
@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
     params.boundary_weight = 0.0;
 
     // initialize
-    printf("  surface fitting ...\n");
+    printf("  surface fitting ...\n"); fflush(stdout);
     ON_NurbsSurface nurbs = pcl::on_nurbs::FittingSurface::initNurbsPCABoundingBox(order, &data);
     pcl::on_nurbs::FittingSurface fit(&data, nurbs);
     //  fit.setQuiet (false); // enable/disable debug output
@@ -74,8 +74,10 @@ int main(int argc, char *argv[]) {
     pcl::on_nurbs::Triangulation::convertSurface2PolygonMesh(fit.m_nurbs, mesh, mesh_resolution);
     viewer.addPolygonMesh(mesh, mesh_id);
 
-    // surface refinement
+	printf("  surface refinement ... %u\n", refinement); fflush(stdout);
+	// surface refinement
     for(unsigned i = 0; i < refinement; i++) {
+		printf("refinement: %u ...   ", i); fflush(stdout);
         fit.refine(0);
         fit.refine(1);
         fit.assemble(params);
@@ -83,16 +85,21 @@ int main(int argc, char *argv[]) {
         pcl::on_nurbs::Triangulation::convertSurface2Vertices(fit.m_nurbs, mesh_cloud, mesh_vertices, mesh_resolution);
         viewer.updatePolygonMesh<pcl::PointXYZ>(mesh_cloud, mesh_vertices, mesh_id);
         viewer.spinOnce();
+		printf("done\n"); fflush(stdout);
     }
 
     // surface fitting with final refinement level
+	printf("  surface fitting with final refinement level ... %u\n", iterations);
+	fflush(stdout);
     for(unsigned i = 0; i < iterations; i++) {
-        fit.assemble(params);
+		printf("iterations: %u...   ", i); fflush(stdout);
+		fit.assemble(params);
         fit.solve();
         pcl::on_nurbs::Triangulation::convertSurface2Vertices(fit.m_nurbs, mesh_cloud, mesh_vertices, mesh_resolution);
         viewer.updatePolygonMesh<pcl::PointXYZ>(mesh_cloud, mesh_vertices, mesh_id);
         viewer.spinOnce();
-    }
+		printf("done\n"); fflush(stdout);
+	}
 
     // ############################################################################
     // fit B-spline curve
@@ -113,7 +120,7 @@ int main(int argc, char *argv[]) {
     curve_params.param.smoothness = 1.0;
 
     // initialisation (circular)
-    printf("  curve fitting ...\n");
+    printf("  curve fitting ...\n"); fflush(stdout);
     pcl::on_nurbs::NurbsDataCurve2d curve_data;
     curve_data.interior = data.interior_param;
     curve_data.interior_weight_function.push_back(true);
@@ -128,10 +135,9 @@ int main(int argc, char *argv[]) {
     // ############################################################################
     // triangulation of trimmed surface
 
-    printf("  triangulate trimmed surface ...\n");
+    printf("  triangulate trimmed surface ...\n"); fflush(stdout);
     viewer.removePolygonMesh(mesh_id);
-    pcl::on_nurbs::Triangulation::convertTrimmedSurface2PolygonMesh(fit.m_nurbs, curve_fit.m_nurbs, mesh,
-                                                                    mesh_resolution);
+    pcl::on_nurbs::Triangulation::convertTrimmedSurface2PolygonMesh(fit.m_nurbs, curve_fit.m_nurbs, mesh, mesh_resolution);
     viewer.addPolygonMesh(mesh, mesh_id);
 
     // save trimmed B-spline surface
